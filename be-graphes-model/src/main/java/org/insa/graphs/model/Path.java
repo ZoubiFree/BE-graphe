@@ -69,7 +69,10 @@ public class Path {
                 arcs.add(nodes.get(i).getSuccessors());
             }
             else {
-                
+                int j=0;
+                for (int k=0;k<(nodes.get(i).getNumberOfSuccessors()-1);k++){
+                    if (nodes.get(k).successors.get(k).getTravelTime(k))
+                }
             }
         }
 
