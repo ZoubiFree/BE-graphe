@@ -19,6 +19,8 @@ import java.util.List;
 public class Path {
 
     /**
+     * dijkstra temps
+     * 
      * Create a new path that goes through the given list of nodes (in order),
      * choosing the fastest route if multiple are available.
      * 
@@ -40,6 +42,8 @@ public class Path {
     }
 
     /**
+     * dijkstra distance
+     * 
      * Create a new path that goes through the given list of nodes (in order),
      * choosing the shortest route if multiple are available.
      * 
@@ -185,6 +189,9 @@ public class Path {
     }
 
     /**
+     * 
+     * Estvalide
+     * 
      * Check if this path is valid.
      * 
      * A path is valid if any of the following is true:
