@@ -38,7 +38,7 @@ public class Path {
     throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         Node act;
-        for (int i=0;i<nodes.size()-1;i++){//boucle sur les nodes
+        for (int i=0;i<nodes.size();i++){//boucle sur les nodes
             act=nodes.get(i);
             List<Arc> listearete=act.getSuccessors();//liste des arcs successeurs
             int plusrapide=0;
