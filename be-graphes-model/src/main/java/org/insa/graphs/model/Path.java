@@ -78,7 +78,13 @@ public class Path {
         throws IllegalArgumentException {
     List<Arc> arcs = new ArrayList<Arc>();
     int n = nodes.size(); // On récupere le nombre de noeuds de la liste
-    
+
+
+    /*GERER LE CAS D UN SEUL NOEUD DANS LA LISTE (BONJOUR MARCHE PAS)*/
+    if (nodes.size() == 1) {
+        return new Path(graph, nodes.get(0));
+    }
+
     for (int i = 0; i < n - 1; i++) { 
         Node noeud_actuel = nodes.get(i); 
         Node noeud_suiv = nodes.get(i + 1);
@@ -99,7 +105,6 @@ public class Path {
         arcs.add(court_arc);
     }
 
-    /*GERER LE CAS D UN SEUL NOEUD DANS LA LISTE */
 
     return new Path(graph, arcs);
 }
@@ -248,10 +253,25 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean result = true;
+        if (isEmpty()) {
+            result = true;
+        }
+        if (arcs.isEmpty()) {
+            result = true;
+        }
+        if (arcs.get(0).getOrigin() != origin) {
+            result = false;
+        }
+        for (int i = 0; i < arcs.size() - 1; i++) {
+            Arc arc_actuel = arcs.get(i);
+            Arc arc_suiv = arcs.get(i + 1);
+            if (arc_actuel.getDestination() != arc_suiv.getOrigin()) {
+                result = false;
+            }
+        }
+        return result;
     }
-
     /**
      * Compute the length of this path (in meters).
      * 
@@ -260,8 +280,11 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float longueur = 0;
+        for (Arc arc : arcs) {
+            longueur += arc.getLength();
+        }
+        return longueur;
     }
 
     /**
