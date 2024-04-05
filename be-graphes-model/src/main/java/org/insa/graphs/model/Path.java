@@ -59,25 +59,32 @@ public class Path {
      */
     
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        int n=nodes.size();
-        List<Node> nodes2 = new ArrayList<Node>();
-        for (int i=0;i<n;i++){
-            if (nodes.get(i).getNumberOfSuccessors()==1){
-                arcs.add(nodes.get(i).getSuccessors());
-            }
-            else {
-                int j=0;
-                for (int k=0;k<(nodes.get(i).getNumberOfSuccessors()-1);k++){
-                    if (nodes.get(k).successors.get(k).getTravelTime(k))
-                }
+        throws IllegalArgumentException {
+    List<Arc> arcs = new ArrayList<Arc>();
+    int n = nodes.size(); // On récupere le nombre de noeuds de la liste
+    
+    for (int i = 0; i < n - 1; i++) { 
+        Node currentNode = nodes.get(i); 
+        Node nextNode = nodes.get(i + 1);
+        
+        Arc shortestArc = null; //On va stocker le chemin
+        double shortestArcLength = Double.POSITIVE_INFINITY; //On part du principe que la longueur du chemin  est infiniment grande
+        for (Arc arc : currentNode.getSuccessors()) { //On va comparer avec tous les successeurs
+            if (arc.getDestination() == nextNode && arc.getLength() < shortestArcLength) { //on verifie que le prochain noeud corresppond au chemin donné et si le chemin est plus court
+                shortestArc = arc;
+                shortestArcLength = arc.getLength();
             }
         }
-
-        return new Path(graph, arcs);
+        
+        if (shortestArc == null) {
+            throw new IllegalArgumentException("Il n y a pas d'aretes sortant");
+        }
+        
+        arcs.add(shortestArc);
     }
+
+    return new Path(graph, arcs);
+}
 
     /**
      * Concatenate the given paths.
