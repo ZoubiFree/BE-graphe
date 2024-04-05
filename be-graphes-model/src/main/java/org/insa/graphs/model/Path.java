@@ -77,24 +77,26 @@ public class Path {
     int n = nodes.size(); // On récupere le nombre de noeuds de la liste
     
     for (int i = 0; i < n - 1; i++) { 
-        Node currentNode = nodes.get(i); 
-        Node nextNode = nodes.get(i + 1);
+        Node noeud_actuel = nodes.get(i); 
+        Node noeud_suiv = nodes.get(i + 1);
         
-        Arc shortestArc = null; //On va stocker le chemin
-        double shortestArcLength = Double.POSITIVE_INFINITY; //On part du principe que la longueur du chemin  est infiniment grande
-        for (Arc arc : currentNode.getSuccessors()) { //On va comparer avec tous les successeurs
-            if (arc.getDestination() == nextNode && arc.getLength() < shortestArcLength) { //on verifie que le prochain noeud corresppond au chemin donné et si le chemin est plus court
-                shortestArc = arc;
-                shortestArcLength = arc.getLength();
+        Arc court_arc = null; //On va stocker le chemin
+        double court_arc_longueur = Double.POSITIVE_INFINITY; //On part du principe que la longueur du chemin  est infiniment grande
+        for (Arc arc : noeud_actuel.getSuccessors()) { //On va comparer avec tous les successeurs
+            if (arc.getDestination() == noeud_suiv && arc.getLength() < court_arc_longueur) { //on verifie que le prochain noeud corresppond au chemin donné et si le chemin est plus court
+                court_arc = arc;
+                court_arc_longueur = arc.getLength();
             }
         }
         
-        if (shortestArc == null) {
+        if (court_arc == null) {
             throw new IllegalArgumentException("Il n y a pas d'aretes sortant");
         }
         
-        arcs.add(shortestArc);
+        arcs.add(court_arc);
     }
+
+    /*GERER LE CAS D UN SEUL NOEUD DANS LA LISTE */
 
     return new Path(graph, arcs);
 }
