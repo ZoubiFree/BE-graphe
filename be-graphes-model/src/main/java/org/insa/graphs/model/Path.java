@@ -53,6 +53,10 @@ public class Path {
                         plusrapide=j;//on prend le plus rapide
                     }
                 }
+                System.out.println("origine "+listearete.get(plusrapide).getOrigin().getId());
+                System.out.println("dest "+listearete.get(plusrapide).getDestination().getId());
+                System.out.println("longeur "+listearete.get(plusrapide).getLength());
+                System.out.println("vitesse "+listearete.get(plusrapide).getMinimumTravelTime());
                 }
             arcs.add(listearete.get(plusrapide));
         }
