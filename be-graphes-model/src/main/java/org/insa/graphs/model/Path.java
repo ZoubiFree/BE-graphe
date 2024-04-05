@@ -35,23 +35,26 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-                List<Arc> arcs = new ArrayList<Arc>();
-                Node act;
-                for (int i=0;i<nodes.size();i++){
-                    act=nodes.get(i);
-                    List<Arc> listearete=act.getSuccessors();
-                    if (listearete.size()>1){
-                        double temps0=listearete;
-                        for (int j=0;j<listearete.size();j++){
-                            
-                        }
-                    }
-                    else {
-                        arcs.add(listearete.get(0));
+    throws IllegalArgumentException {
+        List<Arc> arcs = new ArrayList<Arc>();
+        Node act;
+        for (int i=0;i<nodes.size()-1;i++){//boucle sur les nodes
+            act=nodes.get(i);
+            List<Arc> listearete=act.getSuccessors();//liste des arcs successeurs
+            int plusrapide=0;
+            if (listearete.size()>1){
+                double temps0=listearete.get(0).getMinimumTravelTime();//temps de trajet minimum sur le premier arc
+                for (int j=0;j<listearete.size()-1;j++){//boucle sur les arcs de la node actuelle
+                    double temps1=listearete.get(j).getMinimumTravelTime();//temps de trajet minimum sur le j'eme arc
+                    if (temps1<temps0){
+                        temps0=temps1;
+                        plusrapide=j;//on prend le plus rapide
                     }
                 }
-        return new Path(graph, arcs);
+                }
+            arcs.add(listearete.get(plusrapide));
+        }
+    return new Path(graph, arcs);
     }
 
     /**
