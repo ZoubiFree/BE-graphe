@@ -38,12 +38,10 @@ public class Path {
     throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         Node act;
-        for (int i=0;i<nodes.size()-1;i++){//boucle sur les nodes
+        for (int i=0;i<nodes.size();i++){//boucle sur les nodes
             act=nodes.get(i);
             List<Arc> listearete=act.getSuccessors();//liste des arcs successeurs
             int plusrapide=0;
-            System.out.println("boucle no"+i);
-            System.out.println(listearete.size());
             if (listearete.size()>1){
                 double temps0=listearete.get(0).getMinimumTravelTime();//temps de trajet minimum sur le premier arc
                 for (int j=0;j<listearete.size()-1;j++){//boucle sur les arcs de la node actuelle
@@ -53,10 +51,6 @@ public class Path {
                         plusrapide=j;//on prend le plus rapide
                     }
                 }
-                System.out.println("origine "+listearete.get(plusrapide).getOrigin().getId());
-                System.out.println("dest "+listearete.get(plusrapide).getDestination().getId());
-                System.out.println("longeur "+listearete.get(plusrapide).getLength());
-                System.out.println("vitesse "+listearete.get(plusrapide).getMinimumTravelTime());
                 }
             arcs.add(listearete.get(plusrapide));
         }
@@ -86,7 +80,7 @@ public class Path {
     int n = nodes.size(); // On récupere le nombre de noeuds de la liste
 
 
-    /*GERER LE CAS D UN SEUL NOEUD DANS LA LISTE (BONJOUR MARCHE PAS)*/
+    /*GERER LE CAS D UN SEUL NOEUD DANS LA LISTE */
     if (nodes.size() == 1) {
         return new Path(graph, nodes.get(0));
     }
@@ -259,23 +253,26 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        boolean result = true;
+        boolean result = true; 
         if (isEmpty()) {
             result = true;
         }
-        if (arcs.isEmpty()) {
+        else if (arcs.isEmpty()) {
             result = true;
         }
-        if (arcs.get(0).getOrigin() != origin) {
+        else if (arcs.get(0).getOrigin() != origin) {
             result = false;
         }
+        else{
+
         for (int i = 0; i < arcs.size() - 1; i++) {
             Arc arc_actuel = arcs.get(i);
             Arc arc_suiv = arcs.get(i + 1);
-            if (arc_actuel.getDestination() != arc_suiv.getOrigin()) {
+            if (arc_actuel.getDestination() != arc_suiv.getOrigin()) { //On verifie que le sommet suivant est bien lié au sommet d'origine
                 result = false;
             }
         }
+    }
         return result;
     }
     /**
@@ -304,8 +301,14 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+        double travel_temps = 0; // Initialise le temps de trajet à 0
+        for (Arc arc : arcs) { // Parcourt chaque arc dans le chemin
+            double arc_temps = arc.getTravelTime(speed);
+            /*double distance = arc.getLength(); // longueur de l'arc                    INUTILE, car la fonction dans Arc fait déjà le travail
+            double arc_temps = distance / (speed); // Calcul du temps du trajet*/
+            travel_temps = travel_temps + arc_temps; // Ajoute le temps de trajet sur cet arc au temps total de trajet
+        }
+        return travel_temps;
     }
 
     /**
@@ -322,3 +325,4 @@ public class Path {
     }
 
 }
+
