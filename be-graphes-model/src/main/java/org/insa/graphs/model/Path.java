@@ -336,8 +336,12 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        double travel_temps = 0; // Initialise le temps de trajet à 0
+        for (Arc arc : arcs) { // Parcourt chaque arc dans le chemin
+            double arc_temps = arc.getMinimumTravelTime();
+            travel_temps = travel_temps + arc_temps; // Ajoute le temps de trajet sur cet arc au temps total de trajet
+        }
+        return travel_temps;
     }
 
 }
