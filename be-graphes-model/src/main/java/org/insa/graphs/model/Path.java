@@ -38,22 +38,38 @@ public class Path {
     throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         Node act;
-        for (int i=0;i<nodes.size();i++){//boucle sur les nodes
+        for (int i=0;i<nodes.size()-1;i++){//boucle sur les nodes
             act=nodes.get(i);
             List<Arc> listearete=act.getSuccessors();//liste des arcs successeurs
             int plusrapide=0;
-            if (listearete.size()>1){
+            //System.out.println("boucle no"+i);
+            //System.out.println(listearete.size());
+            if (listearete.size()>=1){
                 double temps0=listearete.get(0).getMinimumTravelTime();//temps de trajet minimum sur le premier arc
-                for (int j=0;j<listearete.size()-1;j++){//boucle sur les arcs de la node actuelle
+                for (int j=0;j<listearete.size();j++){//boucle sur les arcs de la node actuelle
                     double temps1=listearete.get(j).getMinimumTravelTime();//temps de trajet minimum sur le j'eme arc
-                    if (temps1<temps0){
+                    //System.out.println("origine "+listearete.get(j).getOrigin().getId());
+                    //System.out.println("dest "+listearete.get(j).getDestination().getId());
+                    //System.out.println("longeur "+listearete.get(j).getLength());
+                    //System.out.println("temps "+listearete.get(j).getMinimumTravelTime());
+                    //int origine=listearete.get(j).getOrigin().getId();
+                    int dest=listearete.get(j).getDestination().getId();
+                    if (temps1<temps0 && dest==i+1){
                         temps0=temps1;
                         plusrapide=j;//on prend le plus rapide
                     }
                 }
+                //System.out.println("plus rapide origine "+listearete.get(plusrapide).getOrigin().getId());
+                //System.out.println("plus rapide dest "+listearete.get(plusrapide).getDestination().getId());
+                //System.out.println("plus rapide longeur "+listearete.get(plusrapide).getLength());
+                //System.out.println("plus rapide temps "+listearete.get(plusrapide).getMinimumTravelTime());
                 }
             arcs.add(listearete.get(plusrapide));
         }
+        if (nodes.size()==1){
+            return new Path(graph, nodes.get(0));
+        }
+    //System.out.println(arcs);
     return new Path(graph, arcs);
     }
 
