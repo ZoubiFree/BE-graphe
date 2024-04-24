@@ -46,6 +46,7 @@ public class Path {
             //System.out.println(listearete.size());
             if (listearete.size()>=1){
                 double temps0=listearete.get(0).getMinimumTravelTime();//temps de trajet minimum sur le premier arc
+                boolean valide=false;
                 for (int j=0;j<listearete.size();j++){//boucle sur les arcs de la node actuelle
                     double temps1=listearete.get(j).getMinimumTravelTime();//temps de trajet minimum sur le j'eme arc
                     //System.out.println("origine "+listearete.get(j).getOrigin().getId());
@@ -54,10 +55,17 @@ public class Path {
                     //System.out.println("temps "+listearete.get(j).getMinimumTravelTime());
                     //int origine=listearete.get(j).getOrigin().getId();
                     int dest=listearete.get(j).getDestination().getId();
-                    if (temps1<temps0 && dest==i+1){
-                        temps0=temps1;
-                        plusrapide=j;//on prend le plus rapide
+                    if (dest==i+1){
+                        valide=true;
+                        if (temps1<temps0){
+                            temps0=temps1;
+                            plusrapide=j;//on prend le plus rapide
+                        }
                     }
+                
+                }
+                if (valide==false) {
+                    throw new IllegalArgumentException("Il n y a pas d'aretes sortant");
                 }
                 //System.out.println("plus rapide origine "+listearete.get(plusrapide).getOrigin().getId());
                 //System.out.println("plus rapide dest "+listearete.get(plusrapide).getDestination().getId());
