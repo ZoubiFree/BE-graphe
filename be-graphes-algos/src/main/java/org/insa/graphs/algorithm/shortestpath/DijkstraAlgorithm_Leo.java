@@ -1,11 +1,15 @@
 package org.insa.graphs.algorithm.shortestpath;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
+import org.insa.graphs.algorithm.shortestpath.Label;
+import java.util.Map;
 
 public class DijkstraAlgorithm_Leo extends ShortestPathAlgorithm {
 
@@ -34,6 +38,18 @@ public class DijkstraAlgorithm_Leo extends ShortestPathAlgorithm {
                 }
             }
         */
+        Map<Node,Label> labels =new HashMap<>();
+        BinaryHeap<Label> tas=new BinaryHeap<>();
+        boolean fini=false;
+        Node actnode=data.getOrigin();
+        while (!tas.isEmpty()){
+            List<Arc> suivants=actnode.getSuccessors();
+            for (int i=0;i<suivants.size();i++){
+                labels.putIfAbsent(actnode,new Label());
+            }
+
+
+        }
 
             
         }
