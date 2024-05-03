@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class DijkstraAlgorithmSaad extends ShortestPathAlgorithm {
-
+    private Map <Node, Label> maplabel;
     public DijkstraAlgorithmSaad(ShortestPathData data) {
         super(data);
     }
@@ -35,10 +35,27 @@ public class DijkstraAlgorithmSaad extends ShortestPathAlgorithm {
 
         Arc[] predecessorArcs = new Arc[nbNodes];
 
-        maplabel= new HashMap<>();
+        maplabel = new HashMap<>();
         Label originlabel = new Label(data.getOrigin(), false, 0, null);
         maplabel.put(data.getOrigin(), originlabel);
 
+        pile.insert(maplabel.get(data.getOrigin()));
+
+        while (!found && !pile.isEmpty()){
+
+            Label currentLabel = pile.deleteMin();
+            currentLabel.setmarque(true);
+
+            double d = Double.POSITIVE_INFINITY;
+            for(Arc sucArc : currentLabel.getSommet_courant().getsommet_node()){
+            Label suivant = new Label(sucArc.getDestination(), false,  data.getCost(sucArc) + currentLabel.getCost(), currentLabel.getSommet_courant())
+            }
+            if (suivant.getsommet_node() == data.getDestination()){
+                found = true;
+                d = data.getCost(sucArc);
+            }
+
+            
         return solution;
     }
 
