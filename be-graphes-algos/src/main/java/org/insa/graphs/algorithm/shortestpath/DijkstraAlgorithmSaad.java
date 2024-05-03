@@ -54,6 +54,14 @@ public class DijkstraAlgorithmSaad extends ShortestPathAlgorithm {
                 found = true;
                 d = data.getCost(sucArc);
             }
+            else{
+                if (!suivant.getmarque()){
+                    pile.insert(maplabel.get(prochain.getsommet_node()));
+                    if (data.getCost(sucArc)< d){
+
+                    }
+                }
+            }
 
             
         return solution;
