@@ -1,9 +1,26 @@
 package org.insa.graphs.algorithm.shortestpath;
-import Arc.java;
+import org.insa.graphs.model.Arc;
 
 public class Label {
-    protected int sommet_courant;
-    protected boolean marque;
-    protected int cout_realise;
-    protected Arc arc_pere;
+    private int sommet_courant;
+    private boolean marque;
+    private int cout_realise;
+    private Arc arc_pere;
+
+
+    public int getSommet_courant(){
+        return sommet_courant;
+    }
+    
+    public boolean ismarked(){
+        return marque;
+    }
+
+    public Arc getparent(){
+        return arc_pere;
+    }
+
+    public int getCost(){
+        return cout_realise;
+    }
 }
