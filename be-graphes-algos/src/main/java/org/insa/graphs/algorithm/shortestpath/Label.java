@@ -1,7 +1,7 @@
 package org.insa.graphs.algorithm.shortestpath;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
-public class Label {
+public class Label implements Comparable<Label> {
     private int sommet_courant;
     private boolean marque;
     private int cout_realise;
@@ -13,6 +13,8 @@ public class Label {
         this.cout_realise = cout_realise;
         this.arc_pere = arc_pere;
     }
+
+    
     public int getSommet_courant(){
         return sommet_courant;
     }
@@ -28,4 +30,11 @@ public class Label {
     public int getCost(){
         return cout_realise;
     }
+
+    public int compareTo(Label o) {
+        if (o == this){
+            return 0;
+        }
+        return 1;
+     }
 }
