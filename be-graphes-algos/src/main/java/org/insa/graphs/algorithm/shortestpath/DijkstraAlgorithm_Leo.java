@@ -1,8 +1,8 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-public class DijkstraAlgorithm extends ShortestPathAlgorithm {
+public class DijkstraAlgorithm_Leo extends ShortestPathAlgorithm {
 
-    public DijkstraAlgorithm(ShortestPathData data) {
+    public DijkstraAlgorithm_Leo(ShortestPathData data) {
         super(data);
     }
 
