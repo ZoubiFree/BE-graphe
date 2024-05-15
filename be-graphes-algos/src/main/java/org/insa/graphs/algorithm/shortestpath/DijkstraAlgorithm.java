@@ -40,14 +40,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         while (!heap.isEmpty() && !isDestinationMarked) {
             // System.out.println("Exploring new edge");
-            Label minVertex = heap.deleteMin();
+            Label sommet_min = heap.deleteMin();
 
-            nodeLabels[minVertex.getID()].mark();
-            if (minVertex.getID() == destinationID) {
+            nodeLabels[sommet_min.getID()].mark();
+            if (sommet_min.getID() == destinationID) {
                 isDestinationMarked = true;
                 break;
             }
-            Node minNode = minVertex.get_sommet_courant();
+            Node minNode = sommet_min.get_sommet_courant();
             notifyNodeMarked(minNode);
 
             for (Arc arc : minNode.getSuccessors()) {
@@ -66,17 +66,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     else
                         notifyNodeReached(successor);
 
-                    int res = successorLabel.updateCostAndParent(minVertex.getCost() + (float) data.getCost(arc),
+                    int res = successorLabel.updateCostAndParent(sommet_min.getCost() + (float) data.getCost(arc),
                             arc);
-                    // System.out.println("Updating vertex cost: " + res + ", accessing " + successor.getId()
-                    //         + " out of " + nbNodes);
+
                     heap.insert(successorLabel);
-                    // System.out.println("Heap size : " + heap.size());
-                    // try {
-                    //     // notifyNodeReached(successor);
-                    // } catch (Exception e) {
-                    //     System.err.println("Error while removing/inserting node : " + e);
-                    // }
 
                 }
             }
