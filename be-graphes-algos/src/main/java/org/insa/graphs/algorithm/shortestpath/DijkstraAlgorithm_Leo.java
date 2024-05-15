@@ -45,7 +45,10 @@ public class DijkstraAlgorithm_Leo extends ShortestPathAlgorithm {
         while (!tas.isEmpty()){
             List<Arc> suivants=actnode.getSuccessors();
             for (int i=0;i<suivants.size();i++){
-                labels.putIfAbsent(actnode,new Label());
+                labels.putIfAbsent(suivants.get(i).getDestination(),new Label(suivants.get(i).getDestination(),false,Integer.MAX_VALUE,suivants.get(i)));
+                if (!labels.get(suivants.get(i)).ismarked()){
+                    tas.insert(labels.get(suivants.get(i)));
+                }
             }
 
 
