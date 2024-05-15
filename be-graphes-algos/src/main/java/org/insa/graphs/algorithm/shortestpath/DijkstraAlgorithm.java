@@ -39,7 +39,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         nodeLabels[originID].setCost(0);
 
         while (!heap.isEmpty() && !isDestinationMarked) {
-            // System.out.println("Exploring new edge");
             Label sommet_min = heap.deleteMin();
 
             nodeLabels[sommet_min.getID()].mark();
@@ -60,14 +59,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 Label successorLabel = nodeLabels[successor.getId()];
 
                 if (!successorLabel.is_marked()) {
-                    // System.out.println("Reaching node " + successor.getId());
                     if (successorLabel.getCost() != Float.MAX_VALUE)
                         heap.remove(successorLabel);
                     else
                         notifyNodeReached(successor);
 
-                    int res = successorLabel.updateCostAndParent(sommet_min.getCost() + (float) data.getCost(arc),
-                            arc);
+                    successorLabel.updateCostAndParent(sommet_min.getCost() + (float) data.getCost(arc),arc);
 
                     heap.insert(successorLabel);
 
@@ -82,7 +79,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         ArrayList<Arc> shortestArcs = new ArrayList<>();
         Label goingBack = nodeLabels[destinationID];
-        // System.out.println("Finished, going back");
         while (goingBack.getParent() != null) {
             shortestArcs.add(goingBack.getParent());
             goingBack = nodeLabels[goingBack.getParent().getOrigin().getId()];
