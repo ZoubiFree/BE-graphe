@@ -1,10 +1,12 @@
 package org.insa.graphs.algorithm.shortestpath;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.insa.graphs.algorithm.AbstractSolution.Status;
+import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Node;
@@ -18,75 +20,83 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
+        final ShortestPathData data = getInputData();
+        final int originID = data.getOrigin().getId();
+        final int destinationID = data.getDestination().getId();
+        boolean isDestinationMarked = false;
+        ShortestPathSolution solution = null;
 
-        // Retrieve the graph.
-        ShortestPathData data = getInputData();
+        // initialising
         Graph graph = data.getGraph();
-
         final int nbNodes = graph.size();
+        Label nodeLabels[] = new Label[nbNodes];
+        BinaryHeap<Label> heap = new BinaryHeap<>();
+        for (Node node : graph.getNodes()) {
+            nodeLabels[node.getId()] = new Label(node);
+        }
 
-        // Initialize array of distances.
-        double[] distances = new double[nbNodes];
-        Arrays.fill(distances, Double.POSITIVE_INFINITY);
-        distances[data.getOrigin().getId()] = 0;
+        heap.insert(nodeLabels[originID]);
+        nodeLabels[originID].setCost(0);
 
-        // Initialize array of predecessors.
-        Arc[] predecessorArcs = new Arc[nbNodes];
+        while (!heap.isEmpty() && !isDestinationMarked) {
+            // System.out.println("Exploring new edge");
+            Label minVertex = heap.deleteMin();
 
-        // Actual Dijkstra's algorithm.
-        for (int i = 0; i < nbNodes; ++i) {
-            Node node = null;
-            double minDistance = Double.POSITIVE_INFINITY;
-            // Find the node with the smallest distance.
-            for (Node n: graph.getNodes()) {
-                if (!Double.isInfinite(distances[n.getId()]) && distances[n.getId()] < minDistance) {
-                    minDistance = distances[n.getId()];
-                    node = n;
-                }
+            nodeLabels[minVertex.getID()].mark();
+            if (minVertex.getID() == destinationID) {
+                isDestinationMarked = true;
+                break;
             }
-            if (node == null) {
-                break; // All remaining nodes are inaccessible.
-            }
-            // Process current node.
-            distances[node.getId()] = Double.POSITIVE_INFINITY; // Mark node as processed.
-            for (Arc arc: node.getSuccessors()) {
-                // Small test to check allowed roads...
+            Node minNode = minVertex.get_sommet_courant();
+            notifyNodeMarked(minNode);
+
+            for (Arc arc : minNode.getSuccessors()) {
+                Node successor = arc.getDestination();
+                
                 if (!data.isAllowed(arc)) {
                     continue;
                 }
-                // Retrieve weight of the arc.
-                double w = data.getCost(arc);
-                double oldDistance = distances[arc.getDestination().getId()];
-                double newDistance = distances[node.getId()] + w;
-                // Check if new distances would be better, if so update...
-                if (newDistance < oldDistance) {
-                    distances[arc.getDestination().getId()] = newDistance;
-                    predecessorArcs[arc.getDestination().getId()] = arc;
+                
+                Label successorLabel = nodeLabels[successor.getId()];
+
+                if (!successorLabel.is_marked()) {
+                    // System.out.println("Reaching node " + successor.getId());
+                    if (successorLabel.getCost() != Float.MAX_VALUE)
+                        heap.remove(successorLabel);
+                    else
+                        notifyNodeReached(successor);
+
+                    int res = successorLabel.updateCostAndParent(minVertex.getCost() + (float) data.getCost(arc),
+                            arc);
+                    // System.out.println("Updating vertex cost: " + res + ", accessing " + successor.getId()
+                    //         + " out of " + nbNodes);
+                    heap.insert(successorLabel);
+                    // System.out.println("Heap size : " + heap.size());
+                    // try {
+                    //     // notifyNodeReached(successor);
+                    // } catch (Exception e) {
+                    //     System.err.println("Error while removing/inserting node : " + e);
+                    // }
+
                 }
             }
         }
 
-        ShortestPathSolution solution = null;
-
-        // Destination has no predecessor, the solution is infeasible...
-        if (predecessorArcs[data.getDestination().getId()] == null) {
-            solution = new ShortestPathSolution(data, Status.INFEASIBLE);
-        }
-        else {
-            // The destination has been found.
-            // Create the path from the array of predecessors...
-            ArrayList<Arc> arcs = new ArrayList<>();
-            Arc arc = predecessorArcs[data.getDestination().getId()];
-            while (arc != null) {
-                arcs.add(arc);
-                arc = predecessorArcs[arc.getOrigin().getId()];
-            }
-            // Reverse the path...
-            Collections.reverse(arcs);
-            // Create the final solution.
-            solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+        if (!isDestinationMarked) {
+            solution = new ShortestPathSolution(data, Status.INFEASIBLE);;
+            return solution;
         }
 
+        ArrayList<Arc> shortestArcs = new ArrayList<>();
+        Label goingBack = nodeLabels[destinationID];
+        // System.out.println("Finished, going back");
+        while (goingBack.getParent() != null) {
+            shortestArcs.add(goingBack.getParent());
+            goingBack = nodeLabels[goingBack.getParent().getOrigin().getId()];
+        }
+        Collections.reverse(shortestArcs);
+        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, shortestArcs));
         return solution;
     }
+
 }
