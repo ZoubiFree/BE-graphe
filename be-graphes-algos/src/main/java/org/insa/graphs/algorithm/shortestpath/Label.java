@@ -4,10 +4,10 @@ import org.insa.graphs.model.Node;
 public class Label implements Comparable<Label> {
     private Node sommet_courant;
     private boolean marque;
-    private int cout_realise;
+    private double cout_realise;
     private Arc arc_pere;
 
-    public Label(Node sommet_courant, boolean marque, int cout_realise, Arc arc_pere){
+    public Label(Node sommet_courant, boolean marque, double cout_realise, Arc arc_pere){
         this.sommet_courant = sommet_courant;
         this.marque = marque;
         this.cout_realise = cout_realise;
@@ -15,8 +15,12 @@ public class Label implements Comparable<Label> {
     }
 
     
-    public Node getSommet_courant(){
+    public Node getsommet_courant(){
         return sommet_courant;
+    }
+
+    public void setmarque(boolean value){
+        marque = value;
     }
     
     public boolean ismarked(){
@@ -27,7 +31,7 @@ public class Label implements Comparable<Label> {
         return arc_pere;
     }
 
-    public int getCost(){
+    public double getCost(){
         return cout_realise;
     }
 
