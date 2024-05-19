@@ -20,72 +20,76 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
-        final ShortestPathData data = getInputData();
-        final int originID = data.getOrigin().getId();
-        final int destinationID = data.getDestination().getId();
-        boolean isDestinationMarked = false;
-        ShortestPathSolution solution = null;
+        final ShortestPathData data = getInputData(); // Récupère les données d'entrée pour l'algorithme
+        final int originID = data.getOrigin().getId(); // Identifiant du nœud d'origine
+        final int destinationID = data.getDestination().getId(); // Identifiant du nœud de destination
+        boolean isDestinationMarked = false; // Drapeau pour vérifier si la destination est atteinte
+        ShortestPathSolution solution = null; // Variable pour stocker la solution finale
 
-        // initialising
-        Graph graph = data.getGraph();
-        final int nbNodes = graph.size();
-        Label nodeLabels[] = new Label[nbNodes];
-        BinaryHeap<Label> heap = new BinaryHeap<>();
+        // Initialisation du graphe et des structures de données
+        Graph graph = data.getGraph(); 
+        final int nbNodes = graph.size(); 
+        Label nodeLabels[] = new Label[nbNodes]; 
+        BinaryHeap<Label> heap = new BinaryHeap<>(); 
         for (Node node : graph.getNodes()) {
-            nodeLabels[node.getId()] = new Label(node);
+            nodeLabels[node.getId()] = new Label(node); // Crée un label pour chaque nœud
         }
 
-        heap.insert(nodeLabels[originID]);
-        nodeLabels[originID].setCost(0);
+        heap.insert(nodeLabels[originID]); // Ajoute le label de l'origine au tas
+        nodeLabels[originID].setCost(0); // Initialise le coût de l'origine à zéro
 
+        // Boucle principale de l'algorithme de Dikjstra
         while (!heap.isEmpty() && !isDestinationMarked) {
-            Label sommet_min = heap.deleteMin();
+            Label sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
 
-            nodeLabels[sommet_min.getID()].mark();
+            nodeLabels[sommet_min.getID()].mark(); // Marque ce nœud comme visité
             if (sommet_min.getID() == destinationID) {
-                isDestinationMarked = true;
+                isDestinationMarked = true; // Si c'est le nœud de destination, mettre à jour le drapeau
                 break;
             }
             Node minNode = sommet_min.get_sommet_courant();
-            notifyNodeMarked(minNode);
+            notifyNodeMarked(minNode); // Notifie que le nœud a été marqué
 
+            // Traitement des successeurs
             for (Arc arc : minNode.getSuccessors()) {
                 Node successor = arc.getDestination();
                 
                 if (!data.isAllowed(arc)) {
-                    continue;
+                    continue; // Ignore l'arc si non autorisé
                 }
                 
                 Label successorLabel = nodeLabels[successor.getId()];
 
                 if (!successorLabel.is_marked()) {
                     if (successorLabel.getCost() != Float.MAX_VALUE)
-                        heap.remove(successorLabel);
+                        heap.remove(successorLabel); // Supprime le label du tas s'il est déjà présent
                     else
-                        notifyNodeReached(successor);
+                        notifyNodeReached(successor); // Notifie que le successeur a été atteint
 
-                    successorLabel.updateCostAndParent(sommet_min.getCost() + (float) data.getCost(arc),arc);
+                    // Met à jour le coût et le parent du successeur
+                    successorLabel.updateCostAndParent(sommet_min.getCost() + (float) data.getCost(arc), arc);
 
-                    heap.insert(successorLabel);
+                    heap.insert(successorLabel); // Réinsère le label mis à jour dans le tas
 
                 }
             }
         }
 
+        // Si la destination n'a pas été atteinte
         if (!isDestinationMarked) {
-            solution = new ShortestPathSolution(data, Status.INFEASIBLE);;
+            solution = new ShortestPathSolution(data, Status.INFEASIBLE); // Solution non réalisable
             return solution;
         }
 
+        // Création du chemin le plus court en remontant les parents des labels
         ArrayList<Arc> shortestArcs = new ArrayList<>();
         Label goingBack = nodeLabels[destinationID];
         while (goingBack.getParent() != null) {
             shortestArcs.add(goingBack.getParent());
             goingBack = nodeLabels[goingBack.getParent().getOrigin().getId()];
         }
-        Collections.reverse(shortestArcs);
-        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, shortestArcs));
+        Collections.reverse(shortestArcs); // Inverse la liste pour obtenir le chemin correct
+        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, shortestArcs)); // Solution optimale
         return solution;
     }
-
 }
