@@ -12,6 +12,11 @@ public class Labelstar extends Label {
         this.data=data;
     }
 
+    public Labelstar(Node s_courant,ShortestPathData data){
+        super(s_courant);
+        this.data=data;
+    }
+
     public float costkikiwi(Point point_courant,Point point_dest){
         double dist2=Math.pow(point_courant.getLatitude()-point_dest.getLatitude(),2)+Math.pow(point_courant.getLongitude()-point_dest.getLongitude(),2);
         double dist=Math.pow(dist2,1/2);
@@ -22,5 +27,6 @@ public class Labelstar extends Label {
         float res=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),this.data.getDestination().getPoint());
         return res;
     }
+
 }
 

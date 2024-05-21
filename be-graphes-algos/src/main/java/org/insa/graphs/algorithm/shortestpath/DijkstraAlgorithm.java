@@ -22,6 +22,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     Graph graph;
     BinaryHeap<Label> heap;
     Label nodeLabels[];
+    Label goingBack;
+    Label successorLabel;
+    Label sommet_min;
 
 
     public DijkstraAlgorithm(ShortestPathData data) {
@@ -34,15 +37,19 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         this.graph=this.data.getGraph();
         this.NbNodes=this.graph.size();
         heap=new BinaryHeap<>(); 
-        this.nodeLabels=new Label[this.NbNodes];
+        
     }
 
     public void initnalisnaton(){
+        this.nodeLabels=new Label[this.NbNodes];
         for (Node node : graph.getNodes()) {
             nodeLabels[node.getId()] = new Label(node); // Crée un label pour chaque nœud
         }
         heap.insert(nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
         nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
+        this.goingBack=null;
+        this.successorLabel=null;
+        this.sommet_min=null;
     }
 
     @Override
@@ -69,7 +76,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         // Boucle principale de l'algorithme de Dikjstra
         initnalisnaton();
         while (!heap.isEmpty() && !isDestinationMarked) {
-            Label sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
+            this.sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
 
             nodeLabels[sommet_min.getID()].mark(); // Marque ce nœud comme visité
             if (sommet_min.getID() == destinationID) {
@@ -87,7 +94,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     continue; // Ignore l'arc si non autorisé
                 }
                 
-                Label successorLabel = nodeLabels[successor.getId()];
+                this.successorLabel = nodeLabels[successor.getId()];
 
                 if (!successorLabel.is_marked()) {
                     if (successorLabel.getCost() != Float.MAX_VALUE)
@@ -112,7 +119,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         // Création du chemin le plus court en remontant les parents des labels
         ArrayList<Arc> shortestArcs = new ArrayList<>();
-        Label goingBack = nodeLabels[destinationID];
+        this.goingBack = nodeLabels[destinationID];
         while (goingBack.getParent() != null) {
             shortestArcs.add(goingBack.getParent());
             goingBack = nodeLabels[goingBack.getParent().getOrigin().getId()];
