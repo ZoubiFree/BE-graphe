@@ -6,7 +6,9 @@ import org.insa.graphs.model.Point;
 import java.lang.Math;
 
 public class Labelstar extends Label {
-    ShortestPathData data;
+    private ShortestPathData data;
+
+    
     public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent,ShortestPathData data) {
         super(s_courant,marque,reached,cost,parent);
         this.data=data;
