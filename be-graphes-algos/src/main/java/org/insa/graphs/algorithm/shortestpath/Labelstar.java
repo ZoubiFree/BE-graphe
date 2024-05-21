@@ -28,6 +28,7 @@ public class Labelstar extends Label {
         return (float)dist;
     }
 
+    @Override
     public float getTotalCost(){
         //float res=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest);
         return cout_realise;
