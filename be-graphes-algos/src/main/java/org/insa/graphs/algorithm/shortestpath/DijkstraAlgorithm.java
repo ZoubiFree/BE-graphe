@@ -47,9 +47,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         heap.insert(nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
         nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
-        this.goingBack=null;
-        this.successorLabel=null;
-        this.sommet_min=null;
     }
 
     @Override
@@ -77,9 +74,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         initnalisnaton();
         while (!heap.isEmpty() && !isDestinationMarked) {
             this.sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
-
-            nodeLabels[sommet_min.getID()].mark(); // Marque ce nœud comme visité
-            if (sommet_min.getID() == destinationID) {
+            //System.out.println(nodeLabels.length);
+            this.nodeLabels[sommet_min.getID()].mark(); // Marque ce nœud comme visité
+            if (sommet_min.getID() == this.destinationID) {
                 isDestinationMarked = true; // Si c'est le nœud de destination, mettre à jour le drapeau
                 break;
             }

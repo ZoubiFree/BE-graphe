@@ -6,18 +6,21 @@ import org.insa.graphs.model.Point;
 import java.lang.Math;
 
 public class Labelstar extends Label {
-    private ShortestPathData data;
+    public Point s_dest;
 
     
-    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent,ShortestPathData data) {
+    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent,Point s_dest) {
         super(s_courant,marque,reached,cost,parent);
-        this.data=data;
+        this.s_dest=s_dest;
+        this.cout_realise=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest);
     }
 
-    public Labelstar(Node s_courant,ShortestPathData data){
+    public Labelstar(Node s_courant,Point s_dest){
         super(s_courant);
-        this.data=data;
+        this.s_dest=s_dest;
+        this.cout_realise=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest);
     }
+
 
     public float costkikiwi(Point point_courant,Point point_dest){
         double dist2=Math.pow(point_courant.getLatitude()-point_dest.getLatitude(),2)+Math.pow(point_courant.getLongitude()-point_dest.getLongitude(),2);
@@ -26,8 +29,8 @@ public class Labelstar extends Label {
     }
 
     public float getTotalCost(){
-        float res=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),this.data.getDestination().getPoint());
-        return res;
+        //float res=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest);
+        return cout_realise;
     }
 
 }

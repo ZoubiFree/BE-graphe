@@ -9,7 +9,7 @@ public class Label implements Comparable<Label> {
     private Node sommet_courant; // Noeud associé à ce label
     private boolean marque; // Indique si le noeud associé a été marqué lors de l'algorithme
     private boolean reached; // Indique si le noeud associé a été atteint (utile pour Dijkstra)
-    private float cout_realise; // Coût actuel pour atteindre le noeud associé
+    public float cout_realise; // Coût actuel pour atteindre le noeud associé
     private Arc parent; // Arc précédent permettant d'atteindre le noeud associé
     private int ID; // Identifiant du noeud associé
 
