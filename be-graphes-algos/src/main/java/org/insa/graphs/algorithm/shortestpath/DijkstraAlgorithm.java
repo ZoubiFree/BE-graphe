@@ -13,21 +13,49 @@ import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
+    final ShortestPathData data;
+    final int originID;
+    final int destinationID;
+    boolean isDestinationMarked;
+    ShortestPathSolution solution;
+    final int NbNodes;
+    Graph graph;
+    BinaryHeap<Label> heap;
+    Label nodeLabels[];
+
 
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
+        this.data = getInputData(); // Récupère les données d'entrée pour l'algorithme
+        this.originID = data.getOrigin().getId(); // Identifiant du nœud d'origine
+        this.destinationID = data.getDestination().getId(); // Identifiant du nœud de destination
+        this.isDestinationMarked = false; // Drapeau pour vérifier si la destination est atteinte
+        this.solution = null; // Variable pour stocker la solution finale
+        this.graph=this.data.getGraph();
+        this.NbNodes=this.graph.size();
+        heap=new BinaryHeap<>(); 
+        this.nodeLabels=new Label[this.NbNodes];
+    }
+
+    public void initnalisnaton(){
+        for (Node node : graph.getNodes()) {
+            nodeLabels[node.getId()] = new Label(node); // Crée un label pour chaque nœud
+        }
+        heap.insert(nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
+        nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
     }
 
     @Override
     protected ShortestPathSolution doRun() {
-        final ShortestPathData data = getInputData(); // Récupère les données d'entrée pour l'algorithme
+        /*final ShortestPathData data = getInputData(); // Récupère les données d'entrée pour l'algorithme
         final int originID = data.getOrigin().getId(); // Identifiant du nœud d'origine
         final int destinationID = data.getDestination().getId(); // Identifiant du nœud de destination
         boolean isDestinationMarked = false; // Drapeau pour vérifier si la destination est atteinte
         ShortestPathSolution solution = null; // Variable pour stocker la solution finale
+        */
 
         // Initialisation du graphe et des structures de données
-        Graph graph = data.getGraph(); 
+        /*Graph graph = data.getGraph(); 
         final int nbNodes = graph.size(); 
         Label nodeLabels[] = new Label[nbNodes]; 
         BinaryHeap<Label> heap = new BinaryHeap<>(); 
@@ -36,9 +64,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
 
         heap.insert(nodeLabels[originID]); // Ajoute le label de l'origine au tas
-        nodeLabels[originID].setCost(0); // Initialise le coût de l'origine à zéro
+        nodeLabels[originID].setCost(0); // Initialise le coût de l'origine à zéro*/
 
         // Boucle principale de l'algorithme de Dikjstra
+        initnalisnaton();
         while (!heap.isEmpty() && !isDestinationMarked) {
             Label sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
 
