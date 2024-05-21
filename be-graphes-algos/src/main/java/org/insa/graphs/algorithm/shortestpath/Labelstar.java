@@ -9,17 +9,18 @@ public class Labelstar extends Label {
     public Point s_dest;
 
     
-    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent,Point s_dest) {
+    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent,Point s_dest, int speed) {
         super(s_courant,marque,reached,cost,parent);
         this.s_dest=s_dest;
         this.cout_realise=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest);
     }
 
-    public Labelstar(Node s_courant,Point s_dest){
+    public Labelstar(Node s_courant,Point s_dest, int speed){
         super(s_courant);
         this.s_dest=s_dest;
-        this.cout_realise=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest);
+        this.cout_realise=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest) / speed;
     }
+
 
 
     public float costkikiwi(Point point_courant,Point point_dest){

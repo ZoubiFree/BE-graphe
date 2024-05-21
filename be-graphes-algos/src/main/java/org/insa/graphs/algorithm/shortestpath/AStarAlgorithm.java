@@ -1,5 +1,6 @@
 package org.insa.graphs.algorithm.shortestpath;
 import org.insa.graphs.model.Node;
+import org.insa.graphs.model.GraphStatistics;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
     /*Labelstar goingBack;
@@ -13,7 +14,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     }
     public void initnalisnaton(){
         for (Node node : graph.getNodes()) {
-            nodeLabels[node.getId()] = new Labelstar(node,data.getDestination().getPoint()); // Crée un label pour chaque nœud
+            nodeLabels[node.getId()] = new Labelstar(node,data.getDestination().getPoint(), 42); // Crée un label pour chaque nœud
         }
         heap.insert(this.nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
         this.nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro

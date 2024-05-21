@@ -11,6 +11,8 @@ import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
+import org.insa.graphs.algorithm.AbstractInputData.Mode;
+
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     final ShortestPathData data;
@@ -25,7 +27,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     Label goingBack;
     Label successorLabel;
     Label sommet_min;
-
+    Mode mode;
+    
 
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
@@ -37,13 +40,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         this.graph=this.data.getGraph();
         this.NbNodes=this.graph.size();
         heap=new BinaryHeap<>(); 
-        
+        this.mode= data.getMode();
     }
 
     public void initnalisnaton(){
         this.nodeLabels=new Label[this.NbNodes];
         for (Node node : graph.getNodes()) {
             nodeLabels[node.getId()] = new Label(node); // Crée un label pour chaque nœud
+            
+
         }
         heap.insert(nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
         nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
