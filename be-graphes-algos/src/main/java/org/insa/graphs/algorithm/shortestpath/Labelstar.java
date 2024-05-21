@@ -3,38 +3,37 @@ package org.insa.graphs.algorithm.shortestpath;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Point;
-import java.lang.Math;
+import org.insa.graphs.algorithm.AbstractInputData;
+import org.insa.graphs.algorithm.AbstractInputData.Mode;
+import org.insa.graphs.model.GraphStatistics;
 
 public class Labelstar extends Label {
-    public Point s_dest;
-    public float cout_direct;
+    private float shortestDistance;
+    
+    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent, Node s_dest, int maxSpeed)
+    {
+        super(s_courant, marque, reached, cost, parent);
+        shortestDistance = costkikiwi(s_courant, s_dest, maxSpeed);
+    }
+
+    public Labelstar(Node s_depart, Node s_dest,Mode mode, int maxSpeed)
+    {
+        super(s_depart);
+        shortestDistance = costkikiwi(s_depart, s_dest, maxSpeed);
+    }
+
+    public float costkikiwi(Node start, Node end, int maxSpeed) {
+        if (maxSpeed != -1)
+            return (float) Point.distance(start.getPoint(), end.getPoint()) / (1000*maxSpeed);
+        return (float) Point.distance(start.getPoint(), end.getPoint());
+    }
 
     
-    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent,Point s_dest, int speed) {
-        super(s_courant,marque,reached,cost,parent);
-        this.s_dest=s_dest;
-        this.cout_direct=costkikiwi(this.get_sommet_courant().getPoint(),s_dest);
-    }
-
-    public Labelstar(Node s_courant,Point s_dest, int speed){
-        super(s_courant);
-        this.s_dest=s_dest;
-        this.cout_realise=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),s_dest) / speed;
-    }
-
-
-
-    public float costkikiwi(Point point_courant,Point point_dest){
-        double dist2=Math.pow(point_courant.getLatitude()-point_dest.getLatitude(),2)+Math.pow(point_courant.getLongitude()-point_dest.getLongitude(),2);
-        double dist=Math.pow(dist2,1/2);
-        return (float)dist;
-    }
-
     @Override
-    public float getTotalCost(){
-        float res=this.getCost()+this.cout_direct;
-        return cout_realise;
+    public float getTotalCost()
+    {
+        return this.cout_realise + shortestDistance;
     }
+
 
 }
-

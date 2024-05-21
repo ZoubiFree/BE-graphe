@@ -1,5 +1,4 @@
 package org.insa.graphs.algorithm.shortestpath;
-
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 
@@ -54,7 +53,12 @@ public class Label implements Comparable<Label> {
     public boolean hasBeenReached() {
         return this.reached;
     }
-
+    /**
+     * 
+     * @param newCost
+     * @param parent
+     * @return returns 0 if updated, 1 if cost not updated (new is >), 2 if already marked
+     */
     // Méthode pour mettre à jour le coût et le parent du label
     public int updateCostAndParent(float newCost, Arc newParent) {
         this.reached = true;

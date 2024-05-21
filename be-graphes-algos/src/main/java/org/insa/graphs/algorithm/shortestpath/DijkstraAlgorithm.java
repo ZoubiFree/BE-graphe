@@ -29,6 +29,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     Label sommet_min;
     Mode mode;
     
+    
 
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
@@ -43,7 +44,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         this.mode= data.getMode();
     }
 
-    public void initnalisnaton(){
+    public Label[] init(ShortestPathData data){
         this.nodeLabels=new Label[this.NbNodes];
         for (Node node : graph.getNodes()) {
             nodeLabels[node.getId()] = new Label(node); // Crée un label pour chaque nœud
@@ -52,6 +53,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         heap.insert(nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
         nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
+        return nodeLabels;
     }
 
     @Override
@@ -76,7 +78,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         nodeLabels[originID].setCost(0); // Initialise le coût de l'origine à zéro*/
 
         // Boucle principale de l'algorithme de Dikjstra
-        initnalisnaton();
+        heap.insert(init(data)[this.originID]); // Ajoute le label de l'origine au tas
+        init(data)[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
         while (!heap.isEmpty() && !isDestinationMarked) {
             this.sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
             //System.out.println(nodeLabels.length);
