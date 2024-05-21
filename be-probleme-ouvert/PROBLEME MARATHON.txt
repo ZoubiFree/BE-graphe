@@ -1,0 +1,40 @@
+PROBLEME MARATHON:
+
+Pour résoudre le problème de trouver un parcours de marathon formant une boucle à partir d'un point de départ 𝑂, plusieurs contraintes et méthodes doivent être prises en compte. Voici une approche détaillée pour formaliser et résoudre ce problème :
+
+Contraintes à formaliser
+
+Distance Totale : Le parcours doit couvrir environ 42 kilomètres.
+Boucle : Le point de départ O doit être approximativement le même que le point d'arrivée.
+Accessibilité : Le parcours doit être accessible par les graphs donnés.
+Dénivelé (en OPTION) : Si pris en compte, le dénivelé total (montée et descente) doit être raisonnable pour un marathon. Éviter des pentes trop abruptes.
+Route Fermées : Minimiser les sections de route non praticables et les impasses.
+
+Pas de distances négatives donc on utilise Dijkstra, et A*
+
+Les nœuds représentent les intersections ou points spécifiques sur le parcours.
+Les arcs représentent les routes ou segments de chemins entre ces points, avec des poids correspondant à la distance entre les points.
+
+Application des Algorithmes
+
+Utiliser A* pour trouver un chemin initial approximatif, en privilégiant les chemins directs.
+
+Utiliser Dijkstra pour affiner le chemin trouvé par A*, en garantissant le chemin le plus court pour chaque segment de la boucle.
+
+Bouclage du Parcours
+
+Trouver un chemin 
+O→A de 21 km
+Retour : Trouver un chemin 
+A→O de 21 km.
+
+Utiliser A* pour optimiser le retour en considérant le chemin déjà parcouru. (ETRE PLUS PRECIS)
+Vérifier que la somme des distances des deux segments est d'environ 42 km.
+
+Test
+Optimisation Locale : Affiner les segments du parcours pour s'assurer que le total est proche de 42 km.
+Validation : Vérifier que le parcours respecte les contraintes de dénivelé, accessibilité et sécurité.
+Simulation : Simuler le parcours pour vérifier les conditions réelles (par exemple, via une application de simulation de course).
+
+Conclusion
+Cette approche combine les forces des différents algorithmes de recherche de chemin pour résoudre un problème complexe de parcours de marathon en boucle. En modélisant correctement le graphe et en affinant le parcours avec des algorithmes appropriés, on peut obtenir un chemin optimal respectant toutes les contraintes spécifiées.
