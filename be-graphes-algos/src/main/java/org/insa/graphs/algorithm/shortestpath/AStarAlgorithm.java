@@ -29,12 +29,13 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         Label[] nodeLabels = new Label[taille];
         nodeLabels[origine.getId()] = new Labelstar(origine, s_dest,mode,speed);
         nodeLabels[origine.getId()].setCost(0);
+        //System.out.println("je rage");
 
         for (Node node : graph.getNodes()) {
             if (!node.equals(origine)){
-
-            nodeLabels[node.getId()] = new Labelstar(node,data.getDestination(), mode, speed); 
+            nodeLabels[node.getId()] = new Labelstar(node,s_dest, mode, speed); 
             nodeLabels[node.getId()].setCost(Float.MAX_VALUE); 
+            //System.out.println("salam les khoyas");
         }
         }
 

@@ -10,7 +10,7 @@ import org.insa.graphs.model.GraphStatistics;
 public class Labelstar extends Label {
     private float shortestDistance;
     
-    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent, Node s_dest, int maxSpeed)
+    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent, Node s_dest, Mode mode, int maxSpeed)
     {
         super(s_courant, marque, reached, cost, parent);
         shortestDistance = costkikiwi(s_courant, s_dest, maxSpeed);
@@ -24,8 +24,8 @@ public class Labelstar extends Label {
 
     public float costkikiwi(Node start, Node end, int maxSpeed) {
         if (maxSpeed != -1)
-            return (float) Point.distance(start.getPoint(), end.getPoint()) / (1000*maxSpeed);
-        return (float) Point.distance(start.getPoint(), end.getPoint());
+            return (float) Point.distance(start.getPoint(), end.getPoint())*3600 / (1000*maxSpeed);
+        return (float) Point.distance(start.getPoint(), end.getPoint())*3600;
     }
 
     
