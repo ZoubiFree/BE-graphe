@@ -6,8 +6,10 @@ import org.insa.graphs.model.Point;
 import java.lang.Math;
 
 public class Labelstar extends Label {
-    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent) {
+    ShortestPathData data;
+    public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent,ShortestPathData data) {
         super(s_courant,marque,reached,cost,parent);
+        this.data=data;
     }
 
     public float costkikiwi(Point point_courant,Point point_dest){
@@ -15,4 +17,10 @@ public class Labelstar extends Label {
         double dist=Math.pow(dist2,1/2);
         return (float)dist;
     }
+
+    public float getTotalCost(){
+        float res=this.getCost()+costkikiwi(this.get_sommet_courant().getPoint(),this.data.getDestination().getPoint());
+        return res;
+    }
 }
+

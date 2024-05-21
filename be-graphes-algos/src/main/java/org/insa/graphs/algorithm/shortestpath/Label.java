@@ -86,10 +86,17 @@ public class Label implements Comparable<Label> {
         this.marque = false;
     }
 
+    //fonction de total cost (ici elle ne contient que le cout depuis origine)
+    public float getTotalCost(){
+        float res=this.cout_realise;
+        return res;
+    }
+
 
     // Méthode de comparaison pour la priorité dans une file de priorité
     @Override
     public int compareTo(Label o) {
-        return Float.compare(this.cout_realise, o.cout_realise);
+        //return Float.compare(this.cout_realise, o.cout_realise);
+        return Float.compare(this.getTotalCost(),o.getTotalCost());
     }
 }
