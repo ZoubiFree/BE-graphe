@@ -49,3 +49,13 @@ Si aucun chemin nexiste (en aller ou en retour alors le point n'est pas valide, 
 
 Dans la pratique on ne tombera jamais a 42 exactement donc la condition d'arret peut etre une distance = 42 +epsilone avec epsilone pouvant etre augmenter si aucune solution n'est trouver
 
+Les premier point choisi doivent avoir une distance de 21km,
+
+
+On prend un point de depart D, on realise un Dijkstra entre ce point et un point Aleatoire situer a 21km en vol d'oiseau,
+Dijkstra nous a donner une aire de rayon 21km autour de notre depart.
+On fixe une distance min (ex 19), les points possibles etudiés seront situer entre 19 et 21km a vol d'oiseau de D
+On choisi donc un point A a 21km, on realise A* aller puis retour, si le trajet total est superieur a 43km ou impossible (inexistant) on le rejette
+On choisi un nouveau point, celui ci est un voisi du point A d'apres l'arborescence donné par A*
+On recommence tant qu'une solution n'est pas trouver, si on arrive a une distance A* de moins de 41km alors on choisi un nouveau point A situer a 21km vol d'oiseau (point different de celuis choisi pour la premiere iteration)
+Si tt les points possible de la zone (19<distance<21) on ete tester alors on considere qu'il ni a pas de solution pour ce point de depart D on doit donc en choisir un nouveau
