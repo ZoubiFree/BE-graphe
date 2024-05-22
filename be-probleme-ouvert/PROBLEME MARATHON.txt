@@ -38,3 +38,14 @@ Simulation : Simuler le parcours pour vérifier les conditions réelles (par exe
 
 Conclusion
 Cette approche combine les forces des différents algorithmes de recherche de chemin pour résoudre un problème complexe de parcours de marathon en boucle. En modélisant correctement le graphe et en affinant le parcours avec des algorithmes appropriés, on peut obtenir un chemin optimal respectant toutes les contraintes spécifiées.
+
+
+
+
+Autre possibilite : Selectionner le point de depart, selectionner un point autre, calculer la distance min avec Dijkstra suprimer le chemin, calculer un trajet retour avec Dijkstra
+Si la somme des 2 est plus petite que 42 on prend un nouveau point dont la distance en vol doiseau est supperieur a celle du point precedent et on recommence
+Si la somme des 2 est plus grande on prend un point avec distance doiseau plus petite
+Si aucun chemin nexiste (en aller ou en retour alors le point n'est pas valide, il faut en prendre un dont la distance a vol doiseau depuis le depart est similaire)
+
+Dans la pratique on ne tombera jamais a 42 exactement donc la condition d'arret peut etre une distance = 42 +epsilone avec epsilone pouvant etre augmenter si aucune solution n'est trouver
+

@@ -28,6 +28,7 @@ public class Labelstar extends Label {
         } 
         if (maxSpeed == -1)
             return (float) Point.distance(start.getPoint(), end.getPoint())*3600 / (1000*130);
+        //trouver la condition pour qd le mode est pieton
         return (float) Point.distance(start.getPoint(), end.getPoint())*3600 / (1000*maxSpeed);
     }
 
