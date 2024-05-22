@@ -23,7 +23,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     final int NbNodes;
     Graph graph;
     BinaryHeap<Label> heap;
-    Label nodeLabels[];
     Label goingBack;
     Label successorLabel;
     Label sommet_min;
@@ -45,7 +44,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     }
 
     public Label[] init(ShortestPathData data){
-        this.nodeLabels=new Label[this.NbNodes];
+        Label[] nodeLabels=new Label[this.NbNodes];
         for (Node node : graph.getNodes()) {
             nodeLabels[node.getId()] = new Label(node); // Crée un label pour chaque nœud
         }
@@ -76,13 +75,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
        
 
         // Boucle principale de l'algorithme de Dikjstra
-        nodeLabels = init(data);
+        Label[] nodeLabels = this.init(data);
         heap.insert(nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
         nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
         while (!heap.isEmpty() && !isDestinationMarked) {
             this.sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
             //System.out.println(nodeLabels.length);
-            this.nodeLabels[sommet_min.getID()].mark(); // Marque ce nœud comme visité
+            nodeLabels[sommet_min.getID()].mark(); // Marque ce nœud comme visité
             if (sommet_min.getID() == this.destinationID) {
                 isDestinationMarked = true; // Si c'est le nœud de destination, mettre à jour le drapeau
                 break;

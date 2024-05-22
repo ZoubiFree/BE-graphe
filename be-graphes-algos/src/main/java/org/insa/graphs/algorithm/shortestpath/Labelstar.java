@@ -13,19 +13,22 @@ public class Labelstar extends Label {
     public Labelstar(Node s_courant, boolean marque, boolean reached, float cost, Arc parent, Node s_dest, Mode mode, int maxSpeed)
     {
         super(s_courant, marque, reached, cost, parent);
-        shortestDistance = costkikiwi(s_courant, s_dest, maxSpeed);
+        shortestDistance = costkikiwi(s_courant, s_dest, maxSpeed, mode);
     }
 
     public Labelstar(Node s_depart, Node s_dest,Mode mode, int maxSpeed)
     {
         super(s_depart);
-        shortestDistance = costkikiwi(s_depart, s_dest, maxSpeed);
+        shortestDistance = costkikiwi(s_depart, s_dest, maxSpeed,mode);
     }
 
-    public float costkikiwi(Node start, Node end, int maxSpeed) {
-        if (maxSpeed != -1)
-            return (float) Point.distance(start.getPoint(), end.getPoint())*3600 / (1000*maxSpeed);
-        return (float) Point.distance(start.getPoint(), end.getPoint())*3600;
+    public float costkikiwi(Node start, Node end, int maxSpeed, Mode mode) {
+        if (mode == Mode.LENGTH){
+            return (float) Point.distance(start.getPoint(), end.getPoint());
+        } 
+        if (maxSpeed == -1)
+            return (float) Point.distance(start.getPoint(), end.getPoint())*3600 / (1000*130);
+        return (float) Point.distance(start.getPoint(), end.getPoint())*3600 / (1000*maxSpeed);
     }
 
     
