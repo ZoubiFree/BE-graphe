@@ -59,3 +59,6 @@ On choisi donc un point A a 21km, on realise A* aller puis retour (avec aller su
 On choisi un nouveau point, celui ci est un voisi du point A d'apres l'arborescence donné par A*
 On recommence tant qu'une solution n'est pas trouver, si on arrive a une distance A* de moins de 41km alors on choisi un nouveau point A situer a 21km vol d'oiseau (point different de celuis choisi pour la premiere iteration)
 Si tt les points possible de la zone (19<distance<21) on ete tester alors on considere qu'il ni a pas de solution pour ce point de depart D on doit donc en choisir un nouveau
+
+
+
