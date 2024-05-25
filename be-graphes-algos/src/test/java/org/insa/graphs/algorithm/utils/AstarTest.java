@@ -31,7 +31,7 @@ import org.insa.graphs.algorithm.shortestpath.BellmanFordAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathAlgorithm;
 
 
-
+@RunWith(Parameterized.class)
 public class AstarTest{
     
     private static Graph read(String mapName) throws IOException {
@@ -45,7 +45,7 @@ public class AstarTest{
     public static Collection<Object> data() throws IOException {
         Collection<Object> data = new ArrayList<>();
 
-        final Graph map = read("Maps\\toulouse.mapfg");
+        final Graph map = read("Maps\\insa.mapfg");
 
         // Chemin normal à l'INSA (filters[0] = shortest all roads allowed)
         data.add(new ShortestPathData(
@@ -98,13 +98,7 @@ public class AstarTest{
         return data;
     }
 
-    private ShortestPathSolution solution;
-
-    public ShortestPathAlgorithm algorithm;
-
-    @Parameterized.Parameter
-    public ShortestPathData inputData;
-
+    
     @Before
     public void init() {
 
@@ -112,9 +106,17 @@ public class AstarTest{
         this.solution = this.algorithm.run();
     }
 
+    private ShortestPathSolution solution;
+
+    public ShortestPathAlgorithm algorithm;
+
+    @Parameterized.Parameter
+    public ShortestPathData inputData;
+
+
     @Test
     public void originShouldBeOrigin() {
-        init();
+        //init();
         Assume.assumeTrue(this.solution.isFeasible());
         // vérifier que l'origine est bien l'origine
         assertEquals(this.inputData.getOrigin(), this.solution.getInputData().getOrigin());
