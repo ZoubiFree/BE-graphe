@@ -101,30 +101,29 @@ public static Collection<Object> data() throws IOException {
     }
 
     @Test
-    public void solutionEqualsBellmanFord(){
-        Assume.assumeTrue(this.inputData.getGraph().getNodes().size() <= 5000);
+    public void PareilqueBellmanford(){
+        Assume.assumeTrue(this.inputData.getGraph().getNodes().size() <= 10000);
+        BellmanFordAlgorithm AlgoB = new BellmanFordAlgorithm(this.inputData);
+        ShortestPathSolution SolutionB =AlgoB.run();
 
-        BellmanFordAlgorithm bFAlgo = new BellmanFordAlgorithm(this.inputData);
-        ShortestPathSolution bFSolution = bFAlgo.run();
-
-        assertSame(bFSolution.getStatus(), this.solution.getStatus());
+        assertSame(SolutionB.getStatus(), this.solution.getStatus());//verifie que l'etat de la solution est pareil
 
         if (!this.solution.isFeasible()) return;
 
-        assertEquals(bFSolution.getPath().getLength(), this.solution.getPath().getLength(), 0.01);
-        assertSame(bFSolution.isFeasible(), this.solution.isFeasible());
+        assertEquals(SolutionB.getPath().getLength(), this.solution.getPath().getLength(), 0.01);//verifie meme longeure
+        assertSame(SolutionB.isFeasible(), this.solution.isFeasible());//Les deux doivent avoir la meme valeur (si l'un est bon et pas l'autre alors marche pas)
 
         if (!this.solution.isFeasible()) {
             return;
         }
 
-        Path solutionPath = this.solution.getPath();
-        Path bFSolutionPath = bFSolution.getPath();
+        Path chemin = this.solution.getPath();//Dijstra
+        Path CheminB = SolutionB.getPath();//Belmanford
 
-        assertSame(solutionPath.getArcs().size(), bFSolutionPath.getArcs().size());
+        assertSame(chemin.getArcs().size(), CheminB.getArcs().size());//verifie que les deux taille sont bien les memes
 
-        for (int i = 0; i < solutionPath.getArcs().size(); i++) {
-            assertSame(solutionPath.getArcs().get(i).getDestination(), bFSolutionPath.getArcs().get(i).getDestination());
+        for (int i = 0; i < chemin.getArcs().size(); i++) {
+            assertSame(CheminB.getArcs().get(i).getDestination(), chemin.getArcs().get(i).getDestination());//verifie point par point que les deux chemin sont identiques
         }
     }
 
