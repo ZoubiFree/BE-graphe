@@ -84,7 +84,7 @@ public static Collection<Object> data() throws IOException {
 
     @Before
     public void init() {
-        this.algorithm = new AStarAlgorithm(this.inputData);
+        this.algorithm = new AStarAlgorithm(this.inputData);//si on veut Astar on met Astar
         this.solution = this.algorithm.run();
     }   
 
@@ -130,14 +130,3 @@ public static Collection<Object> data() throws IOException {
 
 
 }
-
-    //@Test
-    //public void testShortestPath() {
-    //    assertTrue(solution.isFeasible());
-    //    List<Node> expectedShortestPath =...; // Define the expected shortest path here
-    //    List<Node> calculatedShortestPath = solution.getPath().getNodes();
-    //    assertTrue(expectedShortestPath.containsAll(calculatedShortestPath));
-    //    assertTrue(calculatedShortestPath.containsAll(expectedShortestPath));
-    //}
-//}
-
