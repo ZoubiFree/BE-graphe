@@ -27,102 +27,117 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm;
+import org.insa.graphs.algorithm.shortestpath.AStarAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.BellmanFordAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathAlgorithm;
 
-
 @RunWith(Parameterized.class)
-public class AstarTest{
-    
-    private static Graph read(String mapName) throws IOException {
+public class AstarTest {
+
+    private ShortestPathData inputData;
+    private ShortestPathAlgorithm algorithm;
+    private ShortestPathSolution solution;
+
+    public static Graph read(String mapName) throws IOException {//fonction qui nous permet d'avoir le graph
         GraphReader reader = new BinaryGraphReader(
                 new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 
         return reader.read();
     }
 
-    @Parameterized.Parameters
-    public static Collection<Object> data() throws IOException {
-        Collection<Object> data = new ArrayList<>();
-
-        final Graph map = read("Maps\\insa.mapfg");
-
-        // Chemin normal à l'INSA (filters[0] = shortest all roads allowed)
-        data.add(new ShortestPathData(
-                map,
-                map.get(479),
-                map.get(702),
-                ArcInspectorFactory.getAllFilters().get(0)
-        ));
-
-        // Chemin normal à l'INSA (filters[0] = shortest all roads allowed)
-        data.add(new ShortestPathData(
-                map,
-                map.get(479),
-                map.get(702),
-                ArcInspectorFactory.getAllFilters().get(0)
-        ));
-
-        // Chemin normal à l'INSA (filters[0] = fastest all roads allowed)
-        data.add(new ShortestPathData(
-                map,
-                map.get(479),
-                map.get(702),
-                ArcInspectorFactory.getAllFilters().get(2)
-        ));
-
-        // Chemin normal à l'INSA (filters[0] = fastest all roads allowed)
-        data.add(new ShortestPathData(
-                map,
-                map.get(479),
-                map.get(702),
-                ArcInspectorFactory.getAllFilters().get(2)
-        ));
-
-        // Trajet de longueur nulle
-        data.add(new ShortestPathData(
-                map,
-                map.get(479),
-                map.get(479),
-                ArcInspectorFactory.getAllFilters().get(0)
-        ));
-
-        // Trajet infaisable
-        data.add(new ShortestPathData(
-                map,
-                map.get(186),
-                map.get(864),
-                ArcInspectorFactory.getAllFilters().get(0)
-        ));
-        System.err.println("data "+data);
-        return data;
+    public AstarTest(ShortestPathData inputData) {
+        this.inputData = inputData;
     }
 
-    
+@Parameterized.Parameters
+public static Collection<Object> data() throws IOException {
+    Collection<Object> data = new ArrayList<>();
+
+    final Graph map = read("D:\\Insa\\3 MIC\\BE-Graph\\BE-graphe\\BE-graphe\\Maps\\toulouse.mapgr");
+
+    //trajet normal
+    data.add(new ShortestPathData(
+            map,
+            map.get(7697),
+            map.get(16001),
+            ArcInspectorFactory.getAllFilters().get(0)
+    ));
+
+    //depart=arriver
+    data.add(new ShortestPathData(
+            map,
+            map.get(16001),
+            map.get(16001),
+            ArcInspectorFactory.getAllFilters().get(0)
+    ));
+
+    //innacessible
+    data.add(new ShortestPathData(
+            map,
+            map.get(10388),
+            map.get(16001),
+            ArcInspectorFactory.getAllFilters().get(0)
+    ));
+
+    return data;
+}
+
     @Before
     public void init() {
-
-        this.algorithm = new BellmanFordAlgorithm(this.inputData);
+        this.algorithm = new AStarAlgorithm(this.inputData);
         this.solution = this.algorithm.run();
-    }
-
-    private ShortestPathSolution solution;
-
-    public ShortestPathAlgorithm algorithm;
-
-    @Parameterized.Parameter
-    public ShortestPathData inputData;
-
+    }   
 
     @Test
-    public void originShouldBeOrigin() {
-        //init();
-        Assume.assumeTrue(this.solution.isFeasible());
-        // vérifier que l'origine est bien l'origine
-        assertEquals(this.inputData.getOrigin(), this.solution.getInputData().getOrigin());
-
+    public void testOrigin() {
+        Assume.assumeTrue(solution.isFeasible());
+        assertEquals(inputData.getOrigin(), solution.getInputData().getOrigin());
     }
+
+    @Test
+    public void testDestination() {
+        Assume.assumeTrue(solution.isFeasible());
+        assertEquals(inputData.getDestination(), solution.getInputData().getDestination());
+    }
+
+    @Test
+    public void solutionEqualsBellmanFord(){
+        Assume.assumeTrue(this.inputData.getGraph().getNodes().size() <= 5000);
+
+        BellmanFordAlgorithm bFAlgo = new BellmanFordAlgorithm(this.inputData);
+        ShortestPathSolution bFSolution = bFAlgo.run();
+
+        assertSame(bFSolution.getStatus(), this.solution.getStatus());
+
+        if (!this.solution.isFeasible()) return;
+
+        assertEquals(bFSolution.getPath().getLength(), this.solution.getPath().getLength(), 0.01);
+        assertSame(bFSolution.isFeasible(), this.solution.isFeasible());
+
+        if (!this.solution.isFeasible()) {
+            return;
+        }
+
+        Path solutionPath = this.solution.getPath();
+        Path bFSolutionPath = bFSolution.getPath();
+
+        assertSame(solutionPath.getArcs().size(), bFSolutionPath.getArcs().size());
+
+        for (int i = 0; i < solutionPath.getArcs().size(); i++) {
+            assertSame(solutionPath.getArcs().get(i).getDestination(), bFSolutionPath.getArcs().get(i).getDestination());
+        }
+    }
+
 
 }
 
+    //@Test
+    //public void testShortestPath() {
+    //    assertTrue(solution.isFeasible());
+    //    List<Node> expectedShortestPath =...; // Define the expected shortest path here
+    //    List<Node> calculatedShortestPath = solution.getPath().getNodes();
+    //    assertTrue(expectedShortestPath.containsAll(calculatedShortestPath));
+    //    assertTrue(calculatedShortestPath.containsAll(expectedShortestPath));
+    //}
+//}
 
