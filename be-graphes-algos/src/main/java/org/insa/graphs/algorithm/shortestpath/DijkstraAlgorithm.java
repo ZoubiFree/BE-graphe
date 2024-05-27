@@ -54,30 +54,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
-        /*final ShortestPathData data = getInputData(); // Récupère les données d'entrée pour l'algorithme
-        final int originID = data.getOrigin().getId(); // Identifiant du nœud d'origine
-        final int destinationID = data.getDestination().getId(); // Identifiant du nœud de destination
-        boolean isDestinationMarked = false; // Drapeau pour vérifier si la destination est atteinte
-        ShortestPathSolution solution = null; // Variable pour stocker la solution finale
-        */
 
-        // Initialisation du graphe et des structures de données
-        /*Graph graph = data.getGraph(); 
-        final int nbNodes = graph.size(); 
-        Label nodeLabels[] = new Label[nbNodes]; 
-        BinaryHeap<Label> heap = new BinaryHeap<>(); 
-        for (Node node : graph.getNodes()) {
-            nodeLabels[node.getId()] = new Label(node); // Crée un label pour chaque nœud
-        }
-
-        heap.insert(nodeLabels[originID]); // Ajoute le label de l'origine au tas
-        nodeLabels[originID].setCost(0); // Initialise le coût de l'origine à zéro*/
-       
-
-        // Boucle principale de l'algorithme de Dikjstra
+        
         Label[] nodeLabels = this.init(data);
         heap.insert(nodeLabels[this.originID]); // Ajoute le label de l'origine au tas
         nodeLabels[this.originID].setCost(0); // Initialise le coût de l'origine à zéro
+        // Boucle principale de l'algorithme de Dikjstra
         while (!heap.isEmpty() && !isDestinationMarked) {
             this.sommet_min = heap.deleteMin(); // Extrait le nœud avec le coût minimum
             //System.out.println(nodeLabels.length);

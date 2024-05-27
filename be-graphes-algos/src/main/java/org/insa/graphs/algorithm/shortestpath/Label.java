@@ -57,7 +57,7 @@ public class Label implements Comparable<Label> {
      * 
      * @param newCost
      * @param parent
-     * @return returns 0 if updated, 1 if cost not updated (new is >), 2 if already marked
+     * @return returns 0 if updated, 1 if cost not updated, 2 if already marked
      */
     // Méthode pour mettre à jour le coût et le parent du label
     public int updateCostAndParent(float newCost, Arc newParent) {
